@@ -1,7 +1,11 @@
-<script setup></script>
+<script setup>
+import AppBar from './components/Appbar.vue'
+</script>
 
 <template>
-  <h1>Hello Vue!</h1>
+  <v-app>
+    <AppBar />
+  </v-app>
 </template>
 
 <style scoped></style>
