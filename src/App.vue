@@ -1,7 +1,13 @@
-<script setup></script>
+<script setup>
+import AppBar from './components/Appbar.vue'
+import NavDrawer from './components/NavDrawer.vue'
+</script>
 
 <template>
-  <h1>Hello Vue!</h1>
+  <v-app>
+    <AppBar />
+    <NavDrawer />
+  </v-app>
 </template>
 
 <style scoped></style>
