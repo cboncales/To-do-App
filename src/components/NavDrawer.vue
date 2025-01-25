@@ -22,8 +22,6 @@
         <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
       </v-list>
     </v-navigation-drawer>
-
-    <v-main style="height: 250px"></v-main>
   </div>
 </template>
 
