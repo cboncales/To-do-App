@@ -38,7 +38,7 @@ const addTask = (newTask) => {
             <div class="d-flex justify-space-between">
               <v-card-title class="my-2">Today's Tasks</v-card-title>
               <v-btn
-                class="mx-5 my-1"
+                class="mx-5 my-3"
                 density="compact"
                 size="large"
                 icon="mdi-plus"
