@@ -1,31 +1,57 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import TaskModal from './layout/TaskModal.vue'
 
 // Reactive tasks list
-const tasks = ref([])
+const tasks = ref(JSON.parse(localStorage.getItem('tasks')) || [])
 const isVisible = ref(false)
+
+// Save tasks to localStorage
+const saveTasks = () => {
+  localStorage.setItem('tasks', JSON.stringify(tasks.value))
+}
 
 // Mark task as done/undone
 const doneTask = (id) => {
   const task = tasks.value.find((task) => task.id === id)
-  if (task) task.done = !task.done
+  if (task) {
+    task.done = !task.done
+    saveTasks() // Save updated tasks
+  }
 }
 
 // Delete task
 const deleteTask = (id) => {
   tasks.value = tasks.value.filter((task) => task.id !== id)
+  saveTasks() // Save updated tasks
 }
 
 // Edit task
 const editTask = (task) => {
   task.editing = !task.editing
+  saveTasks() // Save updated tasks
 }
 
 // Add a new task from TaskModal
 const addTask = (newTask) => {
   tasks.value.push(newTask)
+  saveTasks() // Save updated tasks
 }
+
+// Load tasks from localStorage on app mount
+onMounted(() => {
+  const storedTasks = JSON.parse(localStorage.getItem('tasks'))
+  if (storedTasks) tasks.value = storedTasks
+})
+
+// Watch for changes in the tasks list and save to localStorage
+watch(
+  tasks,
+  () => {
+    saveTasks()
+  },
+  { deep: true },
+)
 </script>
 
 <template>
