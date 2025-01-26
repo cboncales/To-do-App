@@ -1,6 +1,11 @@
 <script setup>
+import { ref } from 'vue'
+import TaskModal from './layout/TaskModal.vue'
 const listContainer = document.getElementById('list-container')
 const inputBox = document.getElementById('input-box')
+
+const isVisible = ref(false)
+const addTask = ref()
 </script>
 <template>
   <v-main style="height: 250px" app>
@@ -16,22 +21,20 @@ const inputBox = document.getElementById('input-box')
                 size="large"
                 icon="mdi-plus"
                 color="orange-darken-2"
-                onclick="addTask()"
+                @click="
+                  () => {
+                    isVisible = true
+                  }
+                "
               ></v-btn>
             </div>
             <v-card-text>
               <v-list>
-                <v-list-item-group>
-                  <v-list-item v-for="task in tasks" :key="task.id">
-                    <v-list-item-icon>
-                      <v-icon>mdi-checkbox-blank-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>{{ task.title }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ task.description }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
+                <v-list-item>
+                  <v-icon>mdi-checkbox-blank-outline</v-icon>
+                  <v-list-item-title>Take a Bath</v-list-item-title>
+                  <v-list-item-subtitle>maligo ko</v-list-item-subtitle>
+                </v-list-item>
               </v-list>
             </v-card-text>
 
@@ -45,22 +48,16 @@ const inputBox = document.getElementById('input-box')
                 size="large"
                 icon="mdi-plus"
                 color="orange-darken-2"
-                onclick="addTask()"
+                @click="isVisible = true"
               ></v-btn>
             </div>
             <v-card-text>
               <v-list>
-                <v-list-item-group>
-                  <v-list-item v-for="task in tasks" :key="task.id">
-                    <v-list-item-icon>
-                      <v-icon>mdi-checkbox-blank-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <v-list-item-title>{{ task.title }}</v-list-item-title>
-                      <v-list-item-subtitle>{{ task.description }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
+                <v-list-item>
+                  <v-icon>mdi-checkbox-blank-outline</v-icon>
+                  <v-list-item-title>Take a Bath</v-list-item-title>
+                  <v-list-item-subtitle>maligo ko</v-list-item-subtitle>
+                </v-list-item>
               </v-list>
             </v-card-text>
           </v-card>
@@ -68,5 +65,6 @@ const inputBox = document.getElementById('input-box')
       </v-row>
     </v-container>
   </v-main>
+  <TaskModal v-model:isAddTaskVisible="isVisible"></TaskModal>
 </template>
 <style scoped></style>
