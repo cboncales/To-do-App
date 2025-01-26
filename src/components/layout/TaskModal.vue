@@ -1,14 +1,16 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
+// Props and emits
 const props = defineProps({
-  isAddTaskVisible: Boolean,
+  isAddTaskVisible: Boolean, // Accept `isAddTaskVisible` as a prop
 })
+const emits = defineEmits(['update:isAddTaskVisible', 'add-task']) // Define emits
 
 // Reactive state
 const errorMessages = ref('')
-const name = ref(null)
-const time = ref(null)
+const name = ref('')
+const time = ref('')
 const formHasErrors = ref(false)
 
 // Computed property for form data
@@ -22,72 +24,59 @@ watch(name, () => {
   errorMessages.value = ''
 })
 
-// Methods
-const addressCheck = () => {
-  errorMessages.value = address.value && !name.value ? `Hey! I'm required` : ''
-  return true
-}
+// Add a new task and emit it to TaskList
+const addTask = () => {
+  if (!name.value.trim()) {
+    errorMessages.value = 'Task name is required'
+    return
+  }
 
-const resetForm = (refs) => {
-  errorMessages.value = []
-  formHasErrors.value = false
+  const newTask = {
+    id: Date.now(),
+    title: name.value,
+    time: time.value || 'No time specified',
+    done: false,
+    editing: false,
+  }
 
-  Object.keys(form.value).forEach((f) => {
-    refs[f]?.reset?.()
-  })
-}
-
-const submit = (refs) => {
-  formHasErrors.value = false
-
-  Object.keys(form.value).forEach((f) => {
-    if (!form.value[f]) {
-      formHasErrors.value = true
-    }
-    refs[f]?.validate?.(true)
-  })
+  emits('add-task', newTask) // Emit the task to TaskList
+  emits('update:isAddTaskVisible', false) // Close the modal
+  name.value = ''
+  time.value = ''
 }
 </script>
 
 <template>
-  <v-dialog :model-value="isAddTaskVisible">
+  <v-dialog
+    :model-value="isAddTaskVisible"
+    @update:model-value="$emit('update:isAddTaskVisible', $event)"
+    persistent
+  >
     <v-row justify="center">
       <v-col cols="12" lg="6" md="8" sm="10">
-        <v-card ref="form">
+        <v-card>
+          <v-card-title class="text-center">Add Task</v-card-title>
           <v-card-text>
             <v-text-field
-              ref="name"
               v-model="name"
               :error-messages="errorMessages"
-              :rules="[() => !!name || 'This field is required']"
               label="Task Name"
-              placeholder="Take a bath"
+              placeholder="Enter task name"
               required
             ></v-text-field>
             <v-text-field
-              :error-messages="errorMessages"
-              :rules="[() => !!time || 'This field is required']"
+              v-model="time"
               label="Time"
-              model-value="12:30:00"
+              placeholder="Enter time (optional)"
               suffix="PHT"
               type="time"
             ></v-text-field>
           </v-card-text>
-          <v-divider class="mt-12"></v-divider>
+          <v-divider></v-divider>
           <v-card-actions>
             <v-btn variant="text" @click="$emit('update:isAddTaskVisible', false)"> Cancel </v-btn>
             <v-spacer></v-spacer>
-            <v-slide-x-reverse-transition>
-              <v-tooltip v-if="formHasErrors" location="left">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn class="my-0" icon v-bind="attrs" v-on="on" @click="resetForm">
-                    <v-icon>mdi-refresh</v-icon>
-                  </v-btn>
-                </template>
-                <span>Refresh form</span>
-              </v-tooltip>
-            </v-slide-x-reverse-transition>
-            <v-btn color="primary" variant="text" @click="submit"> Submit </v-btn>
+            <v-btn color="primary" @click="addTask">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
