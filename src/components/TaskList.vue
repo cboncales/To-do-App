@@ -42,7 +42,7 @@ const addTask = (newTask) => {
                 density="compact"
                 size="large"
                 icon="mdi-plus"
-                color="orange-darken-2"
+                color="blue-darken-1"
                 @click="isVisible = true"
               ></v-btn>
             </div>
@@ -67,7 +67,14 @@ const addTask = (newTask) => {
                       >
                         {{ task.done ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline' }}
                       </v-icon>
+                      <v-text-field
+                        v-if="task.editing"
+                        v-model="task.title"
+                        hide-details
+                      ></v-text-field>
                       <span
+                        v-else
+                        @dblclick="task.editing = true"
                         :class="{
                           'text-decoration-line-through': task.done,
                           'text-success': task.done,
@@ -76,22 +83,26 @@ const addTask = (newTask) => {
                       >
                         {{ task.title }}
                       </span>
-                    </div>
-                    <v-divider class="my-2"></v-divider>
-                    <div class="d-flex justify-space-between">
+                      <v-spacer></v-spacer>
                       <span
                         class="text-caption"
-                        :class="{ 'text-decoration-line-through': task.done }"
+                        :class="{
+                          'text-decoration-line-through': task.done,
+                          'text-success': task.done,
+                        }"
                       >
                         {{ task.time }}
                       </span>
-                      <v-btn icon small @click.stop="deleteTask(task.id)">
-                        <v-icon color="blue-grey darken-1" size="small">mdi-delete</v-icon>
-                      </v-btn>
+                    </div>
+                    <v-divider class="my-2"></v-divider>
+                    <div class="d-flex justify-space-between">
                       <v-btn icon small @click.stop="editTask(task)">
-                        <v-icon color="blue-grey darken-1" size="small">
+                        <v-icon color="green" size="small">
                           {{ task.editing ? 'mdi-check' : 'mdi-pencil' }}
                         </v-icon>
+                      </v-btn>
+                      <v-btn icon small @click.stop="deleteTask(task.id)">
+                        <v-icon color="red" size="small">mdi-delete</v-icon>
                       </v-btn>
                     </div>
                   </v-card>
