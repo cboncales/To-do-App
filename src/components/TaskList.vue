@@ -1,11 +1,24 @@
-<script setup></script>
+<script setup>
+const listContainer = document.getElementById('list-container')
+const inputBox = document.getElementById('input-box')
+</script>
 <template>
   <v-main style="height: 250px" app>
     <v-container>
       <v-row>
         <v-col cols="12">
           <v-card>
-            <v-card-title>Today's Tasks</v-card-title>
+            <div class="d-flex justify-space-between">
+              <v-card-title class="my-2">Today's Tasks</v-card-title>
+              <v-btn
+                class="mx-5 my-1"
+                density="compact"
+                size="large"
+                icon="mdi-plus"
+                color="orange-darken-2"
+                onclick="addTask()"
+              ></v-btn>
+            </div>
             <v-card-text>
               <v-list>
                 <v-list-item-group>
@@ -24,7 +37,17 @@
 
             <v-divider></v-divider>
 
-            <v-card-title>Tomorrow's Tasks</v-card-title>
+            <div class="d-flex justify-space-between">
+              <v-card-title class="my-2">Tomorrow's Tasks</v-card-title>
+              <v-btn
+                class="mx-5 my-1"
+                density="compact"
+                size="large"
+                icon="mdi-plus"
+                color="orange-darken-2"
+                onclick="addTask()"
+              ></v-btn>
+            </div>
             <v-card-text>
               <v-list>
                 <v-list-item-group>
