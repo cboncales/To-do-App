@@ -34,6 +34,7 @@ const addTask = (newTask) => {
       <v-row>
         <v-col cols="12">
           <v-card>
+            <!-- Title and Add Task Button -->
             <div class="d-flex justify-space-between">
               <v-card-title class="my-2">Today's Tasks</v-card-title>
               <v-btn
@@ -46,25 +47,56 @@ const addTask = (newTask) => {
               ></v-btn>
             </div>
             <v-card-text>
-              <v-list>
-                <v-list-item v-for="task in tasks" :key="task.id">
-                  <v-icon @click="doneTask(task.id)">
-                    {{ task.done ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline' }}
-                  </v-icon>
-                  <v-list-item-title>{{ task.title }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ task.time }}</v-list-item-subtitle>
-                  <v-list-item-action>
-                    <v-btn @click.stop="deleteTask(task.id)" icon>
-                      <v-icon color="blue-grey darken-1">mdi-delete</v-icon>
-                    </v-btn>
-                    <v-btn @click.stop="editTask(task)" icon>
-                      <v-icon color="blue-grey darken-1">
-                        {{ task.editing ? 'mdi-check' : 'mdi-pencil' }}
+              <!-- Task List -->
+              <v-row dense>
+                <v-col
+                  v-for="task in tasks"
+                  :key="task.id"
+                  cols="12"
+                  sm="6"
+                  md="4"
+                  lg="3"
+                  :class="{ 'blue-grey lighten-3': task.done }"
+                >
+                  <v-card class="pa-3" outlined :elevation="task.done ? 1 : 3">
+                    <div class="d-flex align-center mb-2">
+                      <v-icon
+                        @click="doneTask(task.id)"
+                        :color="task.done ? 'green' : 'grey'"
+                        class="mr-2 cursor-pointer"
+                      >
+                        {{ task.done ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline' }}
                       </v-icon>
-                    </v-btn>
-                  </v-list-item-action>
-                </v-list-item>
-              </v-list>
+                      <span
+                        :class="{
+                          'text-decoration-line-through': task.done,
+                          'text-success': task.done,
+                        }"
+                        class="font-weight-medium"
+                      >
+                        {{ task.title }}
+                      </span>
+                    </div>
+                    <v-divider class="my-2"></v-divider>
+                    <div class="d-flex justify-space-between">
+                      <span
+                        class="text-caption"
+                        :class="{ 'text-decoration-line-through': task.done }"
+                      >
+                        {{ task.time }}
+                      </span>
+                      <v-btn icon small @click.stop="deleteTask(task.id)">
+                        <v-icon color="blue-grey darken-1" size="small">mdi-delete</v-icon>
+                      </v-btn>
+                      <v-btn icon small @click.stop="editTask(task)">
+                        <v-icon color="blue-grey darken-1" size="small">
+                          {{ task.editing ? 'mdi-check' : 'mdi-pencil' }}
+                        </v-icon>
+                      </v-btn>
+                    </div>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-card-text>
           </v-card>
         </v-col>
